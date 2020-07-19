@@ -1,0 +1,13 @@
+.stringLine {
+  position: absolute;
+  width: 1px;
+  background-color: black;
+}
+
+.noteDot {
+  position: absolute;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background-color: #333;
+}

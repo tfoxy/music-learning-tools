@@ -1,78 +1,12 @@
 import React from "react";
+import { FRET_WIDTH, FRET_HEIGHT } from "./constants";
+import StringLine from "./StringLine";
 import styles from "./StringNeck.module.css";
-
-const FRET_WIDTH = 20;
-const FRET_HEIGHT = 30;
 
 interface Props {
   stringNotes: number[];
   frets: number;
   scaleNotes: number[];
-}
-
-function getStringNoteIndexes({
-  note,
-  scaleNotes,
-  frets,
-}: {
-  note: number;
-  scaleNotes: number[];
-  frets: number;
-}) {
-  const stringNotes: number[] = [];
-  let noteCount = 0;
-  let currentScaleNote = note % 12;
-  while (true) {
-    const oldScaleNote = currentScaleNote;
-    const nextScaleNote = scaleNotes.find((note) => note >= oldScaleNote) ?? -1;
-    if (nextScaleNote < 0) {
-      noteCount += 12 - oldScaleNote + scaleNotes[0];
-      currentScaleNote = scaleNotes[0];
-    } else {
-      noteCount += nextScaleNote - oldScaleNote;
-      currentScaleNote = nextScaleNote;
-    }
-    if (noteCount < frets) {
-      stringNotes.push(noteCount);
-      currentScaleNote += 1;
-      noteCount += 1;
-    } else {
-      break;
-    }
-  }
-  return stringNotes;
-}
-
-function StringLine({
-  index,
-  note,
-  scaleNotes,
-  frets,
-}: {
-  index: number;
-  note: number;
-  scaleNotes: number[];
-  frets: number;
-}) {
-  const stringNoteIndexes = getStringNoteIndexes({ note, scaleNotes, frets });
-  console.log(stringNoteIndexes);
-  return (
-    <div
-      className={styles.stringLine}
-      style={{ left: FRET_WIDTH * index, height: FRET_HEIGHT * (frets - 1) }}
-    >
-      {stringNoteIndexes.map((noteIndex) => (
-        <div
-          key={noteIndex}
-          className={styles.noteDot}
-          style={{
-            left: -7,
-            top: FRET_HEIGHT * (noteIndex - 0.75),
-          }}
-        />
-      ))}
-    </div>
-  );
 }
 
 function RootFretLine({ strings }: { strings: number }) {
@@ -103,7 +37,7 @@ export default function StringNeck({ stringNotes, frets, scaleNotes }: Props) {
         <StringLine
           key={index}
           index={index}
-          note={note}
+          naturalNote={note}
           scaleNotes={scaleNotes}
           frets={frets}
         />
